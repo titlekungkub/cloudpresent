@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/titlekungkub/cloudpresent#readme",
   "dependencies": {
-    "aws-sdk": "^2.432.0"
+    "aws-sdk": "^2.432.0",
+    "fs-extra": "^7.0.1"
   }
 }
