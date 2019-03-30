@@ -35,12 +35,22 @@ function uploadAttendanceImage(uploadfile, date, courseID) {
     .promise()
 }
 
-var uploadfile = fs.readFileSync('C:/Users/March/Desktop/profile33.png')
-uploadRefImage(uploadfile, '5831071821', '2110498').then(res => {
-  console.log('Successfully uploaded' + res.Key)
+// var uploadfile = fs.readFileSync('C:/Users/March/Desktop/profile33.png')
+// uploadRefImage(uploadfile, '5831071821', '2110498').then(res => {
+//   console.log('Successfully uploaded' + res.Key)
+// })
+var paramsS3 = {
+  Bucket: bucketName /* required */,
+  MaxKeys: 20,
+  Prefix: '2018/2/2110498/reference/'
+}
+s3.listObjects(paramsS3, function(err, data) {
+  if (err) console.log(err, err.stack)
+  // an error occurred
+  else console.log(data) // successful response
 })
 
-var params = {
+var paramsReg = {
   SimilarityThreshold: 90,
   SourceImage: {
     S3Object: {
@@ -55,35 +65,8 @@ var params = {
     }
   }
 }
-rekognition.compareFaces(params, function(err, data) {
-  if (err) console.log(err, err.stack)
-  // an error occurred
-  else console.log(data) // successful response
-  /*
-     data = {
-      FaceMatches: [
-         {
-        Face: {
-         BoundingBox: {
-          Height: 0.33481481671333313, 
-          Left: 0.31888890266418457, 
-          Top: 0.4933333396911621, 
-          Width: 0.25
-         }, 
-         Confidence: 99.9991226196289
-        }, 
-        Similarity: 100
-       }
-      ], 
-      SourceImageFace: {
-       BoundingBox: {
-        Height: 0.33481481671333313, 
-        Left: 0.31888890266418457, 
-        Top: 0.4933333396911621, 
-        Width: 0.25
-       }, 
-       Confidence: 99.9991226196289
-      }
-     }
-     */
-})
+// rekognition.compareFaces(paramsReg, function(err, data) {
+//   if (err) console.log(err, err.stack)
+//   // an error occurred
+//   else console.log(data) // successful response
+// })
