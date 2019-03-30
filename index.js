@@ -22,5 +22,7 @@ function uploadImage(uploadfile, studentID, courseID) {
     .promise()
 }
 
-const uploadresult = await uploadImage('', '5831078221', '2110498')
-console.log('Successfully uploaded' + uploadresult)
+var uploadfile = fs.readFileSync(req.file.path)
+uploadImage(uploadfile, '5831078221', '2110498').then(res => {
+  console.log('Successfully uploaded' + res.Key)
+})
