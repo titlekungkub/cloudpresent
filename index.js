@@ -2,7 +2,7 @@
 var AWS = require('aws-sdk')
 var credentials = new AWS.SharedIniFileCredentials({ profile: 'present' })
 AWS.config.credentials = credentials
-AWS.config.update({ region: 'us-east-1' })
+AWS.config.update({ region: 'ap-northeast-1' })
 
 // Create unique bucket name
 var bucketName = 'presentproject'
