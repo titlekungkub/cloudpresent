@@ -11,6 +11,9 @@ const UploadImage = () => (
       Select a photo
       <Icon name="upload" />
     </Button>
+    <p style={{ textAlign: "center", fontSize: "0.8em", marginTop: "1em" }}>
+      the maximum number of persons per image is limited to 15 persons
+    </p>
   </Segment>
 )
 

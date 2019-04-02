@@ -9,14 +9,25 @@ class App extends Component {
     return (
       <div>
         <Header />
-        <Grid>
-          <Grid.Column width={10}>
-            <UploadImage />
-          </Grid.Column>
-          <Grid.Column width={6}>
-            <TableResult />
-          </Grid.Column>
-        </Grid>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center"
+          }}
+        >
+          <Grid
+            style={{
+              minWidth: "80%"
+            }}
+          >
+            <Grid.Column width={10}>
+              <UploadImage />
+            </Grid.Column>
+            <Grid.Column width={6}>
+              <TableResult />
+            </Grid.Column>
+          </Grid>
+        </div>
       </div>
     )
   }

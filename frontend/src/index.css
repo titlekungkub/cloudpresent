@@ -8,12 +8,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-image: url("/picture/bg.png");
   background-size: cover;
-  background-repeat: no-repeat;
   background-position: 100% 0%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 code {
