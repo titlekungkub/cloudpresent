@@ -17,7 +17,7 @@ class App extends Component {
         >
           <Grid
             style={{
-              minWidth: "80%"
+              width: "80%"
             }}
           >
             <Grid.Column width={10}>
