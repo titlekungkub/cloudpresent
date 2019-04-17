@@ -6,28 +6,31 @@ export default class UploadImage extends Component {
   state = {
     isUploaded: false,
     imagePreviewUrl: "",
-    file: "",
-    isComparing: false
+    isAnalyzing: false
   }
   handleOnChange(e) {
-    e.preventDefault()
     this.setState({
       isUploaded: true,
-      isComparing: true
+      isAnalyzing: true
     })
     let reader = new FileReader()
     let file = e.target.files[0]
+
+    const fd = new FormData()
+    fd.append("image", file, file.name)
+    axios.post("http://localhost:5555/upload", fd).then(res => {
+      console.log(res)
+    })
+
     reader.onloadend = () => {
       this.setState({
-        file: file,
         imagePreviewUrl: reader.result
       })
     }
     reader.readAsDataURL(file)
-    console.log(file)
   }
   render() {
-    const { isUploaded, isComparing, imagePreviewUrl } = this.state
+    const { isUploaded, isAnalyzing, imagePreviewUrl } = this.state
     return (
       <Segment placeholder style={{ height: 652 }}>
         {isUploaded && (
@@ -76,7 +79,7 @@ export default class UploadImage extends Component {
             </p>
           </div>
         )}
-        <Dimmer active={isComparing}>
+        <Dimmer active={isAnalyzing}>
           <Loader content="Analyzing" />
         </Dimmer>
       </Segment>
