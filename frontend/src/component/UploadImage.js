@@ -16,16 +16,22 @@ export default class UploadImage extends Component {
     let reader = new FileReader()
     let file = e.target.files[0]
 
-    const fd = new FormData()
-    fd.append("image", file, file.name)
-    axios.post("http://localhost:5555/upload", fd).then(res => {
-      console.log(res)
-    })
-
     reader.onloadend = () => {
       this.setState({
         imagePreviewUrl: reader.result
       })
+      axios
+        .post(
+          // replace with gate way api url
+          "API_GATEWAY_URL",
+          { image_data: this.state.imagePreviewUrl }
+        )
+        .then(res => {
+          this.setState({
+            isAnalyzing: false
+          })
+          console.log(res)
+        })
     }
     reader.readAsDataURL(file)
   }
