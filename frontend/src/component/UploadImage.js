@@ -50,30 +50,32 @@ export default class UploadImage extends Component {
             }}
           />
         )}
-        {!isUploaded && (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column"
-            }}
-          >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column"
+          }}
+        >
+          {!isUploaded && (
             <Header icon>
               <Icon name="file image outline" style={{ height: "auto" }} />
               Paperless Record of Entry for Students, Enabling Natural Teaching
             </Header>
-            <label
-              htmlFor="embedimageinput"
-              className="ui medium teal icon right labeled button"
-            >
-              <Icon name="upload" />
-              Select a image
-            </label>
-            <input
-              onChange={this.handleOnChange.bind(this)}
-              hidden
-              type="file"
-              id="embedimageinput"
-            />
+          )}
+          <label
+            htmlFor="embedimageinput"
+            className="ui medium teal icon right labeled button"
+          >
+            <Icon name="upload" />
+            Select a image
+          </label>
+          <input
+            onChange={this.handleOnChange.bind(this)}
+            hidden
+            type="file"
+            id="embedimageinput"
+          />
+          {!isUploaded && (
             <p
               style={{
                 textAlign: "center",
@@ -83,8 +85,8 @@ export default class UploadImage extends Component {
             >
               *The maximum number of persons per image is limited to 15 persons.
             </p>
-          </div>
-        )}
+          )}
+        </div>
         <Dimmer active={isAnalyzing}>
           <Loader content="Analyzing" />
         </Dimmer>
