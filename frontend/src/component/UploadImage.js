@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { Dimmer, Loader, Header, Icon, Segment, Image } from "semantic-ui-react"
 import axios from "axios"
+import config from "../config"
 
 export default class UploadImage extends Component {
   state = {
@@ -22,15 +23,15 @@ export default class UploadImage extends Component {
       })
       axios
         .post(
-          // replace with gate way api url
-          "API_GATEWAY_URL",
-          { image_data: this.state.imagePreviewUrl }
+          config.apiGateway,
+          JSON.stringify({ image_data: this.state.imagePreviewUrl })
         )
         .then(res => {
+          let checklist = res.data.map(item => ({ name: item }))
+          this.props.onClickUpload(checklist)
           this.setState({
             isAnalyzing: false
           })
-          console.log(res)
         })
     }
     reader.readAsDataURL(file)
@@ -38,15 +39,16 @@ export default class UploadImage extends Component {
   render() {
     const { isUploaded, isAnalyzing, imagePreviewUrl } = this.state
     return (
-      <Segment placeholder style={{ height: 652 }}>
+      <Segment placeholder style={{ height: 652, alignItems: "center" }}>
         {isUploaded && (
           <Image
             src={imagePreviewUrl}
             fluid
             style={{
-              height: "100%",
-              width: "100%",
-              objectFit: "contain"
+              height: "90%",
+              width: "90%",
+              objectFit: "contain",
+              marginBottom: "10px"
             }}
           />
         )}

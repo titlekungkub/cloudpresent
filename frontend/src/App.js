@@ -5,6 +5,12 @@ import TableResult from "./component/Table"
 import { Grid } from "semantic-ui-react"
 
 class App extends Component {
+  state = {
+    results: []
+  }
+  onClickUpload(results) {
+    this.setState({ results: results })
+  }
   render() {
     return (
       <div>
@@ -21,10 +27,10 @@ class App extends Component {
             }}
           >
             <Grid.Column width={10}>
-              <UploadImage />
+              <UploadImage onClickUpload={this.onClickUpload.bind(this)} />
             </Grid.Column>
             <Grid.Column width={6}>
-              <TableResult />
+              <TableResult results={this.state.results} />
             </Grid.Column>
           </Grid>
         </div>

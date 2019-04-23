@@ -3,33 +3,17 @@ import { Table, Button, Icon } from "semantic-ui-react"
 import { CSVLink } from "react-csv"
 
 export default class Header extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      results: [
-        {
-          id: "5831071821",
-          name: "Supanat Limjitti"
-        },
-        {
-          id: "5831078221",
-          name: "Siraphat Gruysiriwong"
-        }
-      ]
-    }
-  }
   renderResults(results) {
     return results.map((res, idx) => {
       return (
         <Table.Row key={idx}>
-          <Table.Cell collapsing>{res.id}</Table.Cell>
-          <Table.Cell>{res.name}</Table.Cell>
+          <Table.Cell collapsing>{res.name}</Table.Cell>
         </Table.Row>
       )
     })
   }
   render() {
-    const { results } = this.state
+    const { results } = this.props
     return (
       <Table celled striped>
         <Table.Header>
