@@ -52,8 +52,8 @@ For Lambda Function, copy/paste the following code:
 code for lambda function trigger from S3
 ```
 
-Create the `config.js` file in both backend and frontend folder 
-with your settings base on `config_template_frontend.js` and `config_template_backend.js`
+Create the `config.js` file in backend folder 
+with your settings base on `config_template_backend.js`
 
 ### Running the project
 
