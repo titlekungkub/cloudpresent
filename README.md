@@ -42,6 +42,39 @@ For Lambda Function, copy/paste the following code:
 code for lambda function upload attendance image
 ```
 
+Then go to `frontend/src/component/UploadImage.js` and replace your API Gateway url that created above in this follwing function instead of `API_Gateway_URL`
+
+```
+handleOnChange(e) {
+    this.setState({
+      isUploaded: true,
+      isAnalyzing: true
+    })
+    let reader = new FileReader()
+    let file = e.target.files[0]
+
+    reader.onloadend = () => {
+      this.setState({
+        imagePreviewUrl: reader.result
+      })
+      axios
+        .post(
+          // replace this with AWS API Gateway URL
+          "API_Gateway_URL",
+          JSON.stringify({ image_data: this.state.imagePreviewUrl })
+        )
+        .then(res => {
+          let checklist = res.data.map(item => ({ name: item }))
+          this.props.onClickUpload(checklist)
+          this.setState({
+            isAnalyzing: false
+          })
+        })
+    }
+    reader.readAsDataURL(file)
+  }
+```
+
 #### Using AWS Lambda with Amazon S3
 
 Following this [tutorial](https://docs.aws.amazon.com/en_us/lambda/latest/dg/with-s3-example.html) to trigger your Lambda function with AWS S3 event for `Adding Faces to a Collection` of AWS Rekognition.
