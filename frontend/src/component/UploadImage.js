@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import { Dimmer, Loader, Header, Icon, Segment, Image } from "semantic-ui-react"
 import axios from "axios"
-import config from "../config"
 
 export default class UploadImage extends Component {
   state = {
@@ -23,7 +22,7 @@ export default class UploadImage extends Component {
       })
       axios
         .post(
-          config.apiGateway,
+          "replace this with AWS API Gateway URL",
           JSON.stringify({ image_data: this.state.imagePreviewUrl })
         )
         .then(res => {
