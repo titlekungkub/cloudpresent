@@ -1,3 +1,4 @@
+module.exports.profile = <AWS credentials profile> //by default use "default"
 module.exports.region = <AWS S3 region>
 module.exports.bucket = <AWS S3 Bucket name>
 module.exports.keyPath = <Object Key in AWS S3 Bucket>
