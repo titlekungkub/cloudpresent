@@ -22,7 +22,8 @@ export default class UploadImage extends Component {
       })
       axios
         .post(
-          "replace this with AWS API Gateway URL",
+          // replace this with AWS API Gateway URL
+          "API_Gateway_URL",
           JSON.stringify({ image_data: this.state.imagePreviewUrl })
         )
         .then(res => {
