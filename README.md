@@ -42,7 +42,7 @@ For Lambda Function, copy/paste the following code:
 code for lambda function upload attendance image
 ```
 
-Then go to `frontend/src/component/UploadImage.js` and replace your API Gateway url that created above in this follwing function instead of `API_Gateway_URL`
+Then go to `frontend/src/component/UploadImage.js` and replace your API Gateway url that created above instead of `API_Gateway_URL` in this following function
 
 ```
 handleOnChange(e) {
