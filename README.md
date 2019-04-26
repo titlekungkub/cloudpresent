@@ -32,6 +32,26 @@ and this file should contain lines in the following format:
  
 In backend folder, Create folder `refImages` for reference image of your student in class and save individual student's image within this folder 
 
+#### Build an API with Lambda Proxy Integration
+
+Following this [tutorial](https://docs.aws.amazon.com/en_us/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy-for-lambda.html) to deploy an API for uploading and analyzing attendance image.
+
+For Lambda Function, copy/paste the following code:
+
+```
+code for lambda function upload attendance image
+```
+
+#### Using AWS Lambda with Amazon S3
+
+Following this [tutorial](https://docs.aws.amazon.com/en_us/lambda/latest/dg/with-s3-example.html) to trigger your Lambda function with AWS S3 event for `Adding Faces to a Collection` of AWS Rekognition.
+
+For Lambda Function, copy/paste the following code:
+
+```
+code for lambda function trigger from S3
+```
+
 Create the `config.js` file in both backend and frontend folder 
 with your settings base on `config_template_frontend.js` and `config_template_backend.js`
 
