@@ -41,7 +41,7 @@ After you finished setting up the configuration, You'll need to have some refere
 
 #### In Backend folder
 
-Run this follwing commands once to import your reference images:
+Run this follwing command once to import your reference images:
 
 ```
 node index.js
