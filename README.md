@@ -20,9 +20,9 @@ Run this follwing command in both backend and frontend folder:
 
 Set credentials in the AWS credentials profile file on your local system, located at:
    
-- ~/.aws/credentials on Linux, macOS, or Unix
+- '~/.aws/credentials'on Linux, macOS, or Unix
    
-- C:\Users\USERNAME\.aws\credentials on Windows
+- 'C:\Users\USERNAME\.aws\credentials'on Windows
   
 and this file should contain lines in the following format:
 
@@ -34,98 +34,15 @@ In backend folder, Create folder `refImages` for reference image of your student
 
 #### Build an API with Lambda Proxy Integration
 
-Following this [tutorial](https://docs.aws.amazon.com/en_us/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy-for-lambda.html) to deploy an API for uploading and analyzing attendance image.
+Follow this [tutorial](https://docs.aws.amazon.com/en_us/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy-for-lambda.html) to deploy an API for uploading and analyzing attendance image.
 
-For Lambda Function, copy/paste the following code:
+For the Lambda Function, use the following code:
 
-```
-from __future__ import print_function
+* Note that you also need to include OpenCV and Numpy libraries along with the Lambda function. This can be done using the upload .zip as the code entry type and include the required libraries in the same .zip file as the Lambda function code.
 
-import boto3
-from decimal import Decimal
-import json
-import urllib
+* You can also use [this](aws-lambda-python-opencv-prebuilt.zip) .zip which already includes OpenCV and Numpy along with lambda_function.py detailed below.
 
-print('Loading function')
-
-rekognition = boto3.client('rekognition')
-
-
-# --------------- Helper Functions to call Rekognition APIs ------------------
-
-def index_faces(bucket, key, collection, studentid):
-    # Note: Collection has to be created upfront. Use CreateCollection API to create a collecion.
-    #rekognition.create_collection(CollectionId=collection)
-    response = rekognition.index_faces(Image={"S3Object": {"Bucket": bucket, "Name": key}}, ExternalImageId=studentid, CollectionId=collection)
-    return response
-
-
-# --------------- Main handler ------------------
-
-def lambda_handler(event, context):
-    '''Demonstrates S3 trigger that uses
-    Rekognition APIs to detect faces, labels and index faces in S3 Object.
-    '''
-    #print("Received event: " + json.dumps(event, indent=2))
-
-    # Get the object from the event
-    bucket = event['Records'][0]['s3']['bucket']['name']
-    key = urllib.unquote_plus(event['Records'][0]['s3']['object']['key'].encode('utf8'))
-    try:
-
-        # Calls rekognition IndexFaces API to detect faces in S3 object and index faces into specified collection
-        folder = key.split('/reference')[0] # collection in format '2018/2/2110498'
-        collection = folder.replace('/','-')
-        studentid = key.split('reference/')[1] # studentid in format '5831001021'
-        response = index_faces(bucket, key, collection, studentid)
-
-        # Print response to console.
-        print(response)
-
-        return response
-    except Exception as e:
-        print(e)
-        raise e
-```
-
-Then go to `frontend/src/component/UploadImage.js` and replace your API Gateway url that created above instead of `API_Gateway_URL` in this following function
-
-```
-handleOnChange(e) {
-    this.setState({
-      isUploaded: true,
-      isAnalyzing: true
-    })
-    let reader = new FileReader()
-    let file = e.target.files[0]
-
-    reader.onloadend = () => {
-      this.setState({
-        imagePreviewUrl: reader.result
-      })
-      axios
-        .post(
-          // replace this with AWS API Gateway URL
-          "API_Gateway_URL",
-          JSON.stringify({ image_data: this.state.imagePreviewUrl })
-        )
-        .then(res => {
-          let checklist = res.data.map(item => ({ name: item }))
-          this.props.onClickUpload(checklist)
-          this.setState({
-            isAnalyzing: false
-          })
-        })
-    }
-    reader.readAsDataURL(file)
-  }
-```
-
-#### Using AWS Lambda with Amazon S3
-
-Following this [tutorial](https://docs.aws.amazon.com/en_us/lambda/latest/dg/with-s3-example.html) to trigger your Lambda function with AWS S3 event for `Adding Faces to a Collection` of AWS Rekognition.
-
-For Lambda Function, copy/paste the following code:
+* Remember to edit the Lambda function's role to include S3 write access to allow the Lambda function to upload the image into S3 bucket.
 
 ```
 from __future__ import print_function
@@ -242,11 +159,99 @@ def lambda_handler(event, context):
         return response
         
         raise e
+
 ```
 
-* Note that you also need to include OpenCV and Numpy libraries along with the Lambda function. This can be done using the upload .zip as the code entry type and include the required libraries in the same .zip file as the Lambda function code.
+Then go to `frontend/src/component/UploadImage.js` and replace your API Gateway URL that was created above instead of `API_Gateway_URL` in this following function
 
-** You can also use [this](aws-lambda-python-opencv-prebuilt.zip) .zip which includes OpenCV and Numpy along with lambda_function.py.
+```
+handleOnChange(e) {
+    this.setState({
+      isUploaded: true,
+      isAnalyzing: true
+    })
+    let reader = new FileReader()
+    let file = e.target.files[0]
+
+    reader.onloadend = () => {
+      this.setState({
+        imagePreviewUrl: reader.result
+      })
+      axios
+        .post(
+          // replace this with AWS API Gateway URL
+          "API_Gateway_URL",
+          JSON.stringify({ image_data: this.state.imagePreviewUrl })
+        )
+        .then(res => {
+          let checklist = res.data.map(item => ({ name: item }))
+          this.props.onClickUpload(checklist)
+          this.setState({
+            isAnalyzing: false
+          })
+        })
+    }
+    reader.readAsDataURL(file)
+  }
+```
+
+#### Using AWS Lambda with Amazon S3
+
+Following this [tutorial](https://docs.aws.amazon.com/en_us/lambda/latest/dg/with-s3-example.html) to trigger your Lambda function with AWS S3 event for `Adding Faces to a Collection` of AWS Rekognition.
+
+For Lambda Function, copy/paste the following code:
+
+```
+from __future__ import print_function
+
+import boto3
+from decimal import Decimal
+import json
+import urllib
+
+print('Loading function')
+
+rekognition = boto3.client('rekognition')
+
+
+# --------------- Helper Functions to call Rekognition APIs ------------------
+
+def index_faces(bucket, key, collection, studentid):
+    # Note: Collection has to be created upfront. Use CreateCollection API to create a collecion.
+    #rekognition.create_collection(CollectionId=collection)
+    response = rekognition.index_faces(Image={"S3Object": {"Bucket": bucket, "Name": key}}, ExternalImageId=studentid, CollectionId=collection)
+    return response
+
+
+# --------------- Main handler ------------------
+
+def lambda_handler(event, context):
+    '''Demonstrates S3 trigger that uses
+    Rekognition APIs to detect faces, labels and index faces in S3 Object.
+    '''
+    #print("Received event: " + json.dumps(event, indent=2))
+
+    # Get the object from the event
+    bucket = event['Records'][0]['s3']['bucket']['name']
+    key = urllib.unquote_plus(event['Records'][0]['s3']['object']['key'].encode('utf8'))
+    try:
+
+        # Calls rekognition IndexFaces API to detect faces in S3 object and index faces into specified collection
+        folder = key.split('/reference')[0] # collection in format '2018/2/2110498'
+        collection = folder.replace('/','-')
+        studentid = key.split('reference/')[1] # studentid in format '5831001021'
+        response = index_faces(bucket, key, collection, studentid)
+
+        # Print response to console.
+        print(response)
+
+        return response
+    except Exception as e:
+        print(e)
+        raise e
+```
+
+Before running the Lambda function for the first time, you need to create AWS Rekognition face collection to store you indexed faces. It can be done using AWS CLI as detailed [here](https://docs.aws.amazon.com/cli/latest/reference/rekognition/create-collection.html).
 
 Create the `config.js` file in backend folder 
 with your settings base on `config_template_backend.js`
